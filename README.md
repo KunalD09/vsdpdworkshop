@@ -59,6 +59,8 @@ The issue seen because of having only one power supply is as follows.
 
 As shown in the image below, the input to the inverter is 1110_0011_1010_0101 which generates 0001_1100_0101_1010. when the inverters switch from logic 1 to logic 0, the parasitic capacitances discharge simultaneously which increases the volatge level at the ground pin of the power supply. This phenomenon is called Ground bounce. 
 
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/1836f1b5-caed-4328-a366-805d95c85b43)
+
 Similarly, when the inverters switch from logic 0 to logic 1, there is huge demand of current to charge the parasitic capacitances which causes drop in voltage called as Voltage droop. 
 
 Since these phenomenon can destroy the functionality of the circuit, we must have power grid or power mesh as shown in image below. It means instead of having a common power supply, each sub-regions have VDD and GND nets local to them so that they can draw power from the nearby power supply net or discharge the current to nearest GND without causing voltage droop or ground bounce.
@@ -66,10 +68,6 @@ Since these phenomenon can destroy the functionality of the circuit, we must hav
 ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/c92be436-02c7-4c13-be91-3b192fa20a7b)
 
 **e. Pin-placement and logical cell placement blockage**
-
-
-
-![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/1836f1b5-caed-4328-a366-805d95c85b43)
 
 
 
