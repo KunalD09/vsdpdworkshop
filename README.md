@@ -24,4 +24,14 @@ A Utilisation Factor of 1 means 100% utilisation leaving no space for extra cell
 However, practically, the Utilisation Factor is 0.5-0.6. 
 Likewise, an Aspect ratio of 1 implies that the chip is square shaped. Any value other than 1 implies rectangular chip.
 
+b. Pre-placed cells
+
+Consider the circuit as shown in image below, the circuit is divided into 2 parts also called IP's. 
+
 ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/c6c1f138-9ee4-44f2-96c9-6a767fa1d86f)
+
+There can be many other IP's available such as memories, clock gates etc. 
+These IP's are placed manually by the user before running automated place-and-route, so they are called pre-placed cells.
+
+Therefore, the P&R tool cannot touch the placement of these IP's (pre-placed cells).
+
