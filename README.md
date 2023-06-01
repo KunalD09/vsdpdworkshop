@@ -23,3 +23,5 @@ They are defined as follows
 A Utilisation Factor of 1 means 100% utilisation leaving no space for extra cells or nets. 
 However, practically, the Utilisation Factor is 0.5-0.6. 
 Likewise, an Aspect ratio of 1 implies that the chip is square shaped. Any value other than 1 implies rectangular chip.
+
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/c6c1f138-9ee4-44f2-96c9-6a767fa1d86f)
