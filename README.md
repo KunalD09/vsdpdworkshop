@@ -15,13 +15,10 @@ Assume height and width of each cell is 1 unit. By keeping all the cells inside 
 Therefore, two parameters are important for floorplanning, Utilization factor and Aspect ratio. 
 They are defined as follows
 
-Utilization factor  =  Area occupied by netlist 
-                      --------------------------
-                        Total area of the core
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/91753a4a-a546-4b68-8968-f135728db99b)
 
-Aspect ratio  =  Height
-                --------
-                 Width
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/40d2cf5a-3520-42e6-b32b-405d93f4faa7)
+
 
 A Utilisation Factor of 1 means 100% utilisation leaving no space for extra cells or nets. 
 However, practically, the Utilisation Factor is 0.5-0.6. 
