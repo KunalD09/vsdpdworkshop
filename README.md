@@ -69,5 +69,13 @@ Since these phenomenon can destroy the functionality of the circuit, we must hav
 
 **e. Pin-placement and logical cell placement blockage**
 
+As shown in the image below, the pins are placed between the core and die and planning for pin-placement is done by backend engineers for which they need to understand the design. The pin-blockage is placed between the pins to avoid placing the logic cells between core and die. 
+
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/8d355506-12f0-4b00-86c2-70354a46e46b)
+
+**f. Steps to run floorplan using openlane**
+
+
+
 
 
