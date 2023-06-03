@@ -76,6 +76,56 @@ l. CTS – Clock tree synteshsis is used to create the clock distribution networ
 
 m. Routing – Implements the interconnect system between standard cells using the remaining available metal layers after CTS and PDN generation. The routing is performed on routing grids to ensure minimal DRC errors.
 
+**DAY-1 LABS**
+
+Openlane flow initial run command to enter into bash mode is docker command as given in image below.
+
+To run the entire flow, there is a script available flow.tcl which will run the flow from synthesis to GDSII file generation. We can run the script in interactive mode as well where we can run each from synthesis to GDSII flow separately.
+
+To enter into interactive mode, enter following command
+
+**./flow.tcl -interactive**
+
+To invoke openlane, following command is used
+
+**package require openlane 0.9**
+
+Before running synthesis, it is important to set the environment variables, library paths and design files which can be done by. The design chosen here is RISC-V 32a design which is a simple processor design.
+
+The following command sets the paths to picorv32a design files, constraints, and TCL scripts to run the physical design steps.
+
+**prep -design picorv32a**
+
+As shown in image below, the prep -design command does following items
+1. sources the <design>/config.tcl file
+2. set the Process Design Kit (PDK) root directory which is SKY130A.
+3. Standard cell library used here is sky130_fd_sc_hd
+4. Extracts the number of metal layers from the .tlef file. There are 5 metal layers available in sky130A PDK.
+5. Merges the LEF files - The merged.lef file contain the metal layer area information and cell area information for the process corner which are required for the implementation steps.
+6. It creates a runs/ directory where all the log files, results, reports and config files are stored.
+
+There are many config files which contains switches to set the synthesis, floorplan, placement and routing strategies. 
+1. Openlane has default settings
+2. config.tcl file overrides the default settings
+3. <process_corner>_config.tcl file (example - sky130A_sky130_fd_sc_hd_config.tcl) overrides the config.tcl settings - this file can be modified to change the settings according to requirements.
+
+To run synthesis, run the following command. It will Yosys tool and ABC tool which converts the RTL to the gate-level netlist. 
+ 
+**run_synthesis**
+         
+Calculation of the Flop ratio
+                  
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/1109df6e-5981-402e-95d8-b4d0444e5527)
+         
+According to synthesis results,
+Number of D flip-flops = 1613
+Total number of cells  = 14876
+Flop ratio = (1613/14876) * 100 = 10.84%
+         
+1. We may check the success of the synthesis step by checking the synthesis folder for the synthesized netlist file (.v file)
+2. The synthesis statistics report can be accessed within the reports directory. It is usually the last yosys file since files are listed chronologically by date of modification.
+3. The synthesis timing report is as follows:    
+         
 # **DAY 2**
 
 # Floorplanning and PLacement and Library cells
@@ -153,12 +203,32 @@ As shown in the image below, the pins are placed between the core and die and pl
 
 ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/8d355506-12f0-4b00-86c2-70354a46e46b)
 
-**f. Steps to run floorplan using openlane**
+DAY-2 LABS
 
-**g. Review floorplan files and steps to view floorplan**
+**Floorplan run on OpenLANE & view in Magic**
+Importance files in increasing priority order:
+      - floorplan.tcl - it contains the system default settings
+      - config.tcl - it overrides the default settings in floorplan.tcl
+      - sky130A_sky130_fd_sc_hd_config.tcl - the settings in this file will override config.tcl file settings
+         
+Floorplan envrionment variables or switches:
+      - FP_CORE_UTIL - floorplan core utilisation
+      - FP_ASPECT_RATIO - floorplan aspect ratio
+      - FP_CORE_MARGIN - Core to die margin area
+      - FP_IO_MODE - defines pin configurations (1 = equidistant/0 = not equidistant)
+      - FP_CORE_VMETAL - vertical metal layer
+      - FP_CORE_HMETAL - horizontal metal layer
+         
+Note: Usually, vertical metal layer and horizontal metal layer values will be 1 more than that specified in the files
+         
+To run the picorv32a floorplan in openLANE, use the below command
 
-**h. Review floorplan layout in Magic tool**
+**run_floorplan**
+         
+To view the floorplan, Magic is invoked after moving to the results/floorplan directory:
 
+
+         
 # Lec 2:
 
 **a. Netlist binding and initial placement**
