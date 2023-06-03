@@ -232,6 +232,106 @@ The next step is to draw a stick diagram of the schematic (transistor level circ
 
 According to the transistor level circuit, the drain of PMOS transistors E & F are connected to the drain of NMOS transistors A, C & E using a blue-colored metal layer.  
 
+Based on the stick diagram and DRC rules, the layout is drawn as shown in below image.
+
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/34a09075-2576-4c84-97b5-6338352bae35)
+
+The outputs of the layout include following items
+1. Circuit description language
+2. GDSII file (goes to foundry for manufacturing)
+3. LEF (contains area information of the layout)
+4. Extracted SPICE netlist (.cir file that contains parasitics i.e. Resistances and capacitances of the layout)
+
+The next step is Characterization of the circuit which produces 
+1. Timing .libs
+2. Power .libs
+3. Noise .libs
+4. Functionality of the circuit
+
+**d. Characterization Flow**
+For characterization, we need following information:
+1. Extracted Spice netlist (.cir) file - It contains the connectivity information of the circuit, capacitances and resistances for each net and sub-circuit (.sub) file. All of these are defined in .cir file.
+   Below image shows the .cir and sub-circuit file example.
+   
+   ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/d8b2d3f6-9553-44a2-b159-50288e7e16f5)
+
+2. The sub-circuit file includes the PMOS and NMOS models provided by the foundry.
+   PMOS and NMOS models consists of the parameters of the PMOS and NMOS transistors respectively.
+   
+   ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/135eda38-cf42-4630-9444-8c1e6bc30288)
+
+Steps to perform the characterization:
+1. Read the SPICE models for PMOS and NMOS.
+2. Read the Extracted spice netlist (.cir) file. 
+3. Recognize the behavior of the buffer.
+4. Read the sub-circuit (.sub) file.
+5. Connect the DC power supply to the inverters as shown in below image.
+6. Apply the stimulus which can be a square wave or sine waive.
+7. Connect the output load (Capacitor).
+8. Write the command to simulate in .cir file. It can be a Transient analysis (.tran is the command) or DC analysis (.dc is the command). 
+9. Feed all the above information to the software GUNA which will produce timing, power and noise .libs file.
+
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/9d99e328-041b-4d89-84ef-dd24560a8c64)
+
+# Lec 4:
+
+The first is the timing characterization. All the waveforms below are taken from the inverter and buffer circuit described above.
+
+**a. Timing Threshold Definitions:**
+
+1. **Slew_low_rise_threshold:** As indicated by the arrow, the low value of the voltage of the rising waveform which is typically about 20%-30% of the VDD.
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/e24c531e-fbe5-4d27-8c4d-1b2fd37e9f0b)
+
+2. **Slew_high_rise_threshold:** As indicated by the arrow, the high value of the voltage of the rising waveform which is typically 70%-80% of the VDD.
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/b09646d9-cf54-4d2e-80ba-44b872570847)
+
+3. **Slew_low_fall_threshold:** As indicated by the arrow, the low value of the voltage of the falling waveform which is typically 20%-30% of the VDD.
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/9be5ef66-7e16-4c97-9248-bcf378361c44)
+
+4. **Slew_high_fall_threshold:** As indicated by the arrow, the high value of the voltage of the falling waveform which is typically 70%-80% of the VDD.
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/b565226a-fe39-4783-96a6-9103a7566f4e)
+
+5. **in_rise_threshold:** As indicated by the arrow, the value of the voltage of the input rising waveform which is typically 50% of the VDD.
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/151e78ae-d605-42de-af2c-8ad1c7f5ce91)
+
+6. **out_rise_threshold:** As indicated by the arrow, the value of the voltage of the output rising waveform which is typically 50% of the VDD.
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/f38350d2-7664-4a36-9a3f-c587aa646c2d)
+
+7. **in_fall_threshold:** As indicated by the arrow, the value of the voltage of the input falling waveform which is typically 50% of the VDD.
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/cf6878bb-bf46-4405-87a9-37535e4bbb9b)
+
+8. **out_fall_threshold:** As indicated by the arrow, the value of the voltage of the output falling waveform which is typically 50% of the VDD.
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/c78d28ad-b098-4824-ad44-c49a48933e04)
+
+
+b. **Propagation delay and Transient time:**
+
+**I. Propagation delay is defined as follows:**
+
+1. Propagation delay for rising waveform of buffer = time at out_rise_threshold - time at in_rise_threshold
+2. Propagation delay for falling waveform of buffer = time at out_fall_threshold - time at in_fall_threshold
+
+For example, as shown in image below, the time at out_rise_threshold is 3.23ns and time at in_rise_threshold is 3.207ns
+So, propagation delay = 3.23ns - 3.207ns = 0.023ns or 23ps
+
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/857df7f1-84a3-4b98-b829-c613efd172d7)
+
+As shown in below image, the negative delays for the cell are not accepted, so choosing the correct threshold value is very important
+
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/522babbe-a98e-459c-baef-b7245d7bdb4f)
+
+**II. Transition time:**
+
+Transition time = time at Slew_high_rise_threshold - time at Slew_low_rise_threshold
+
+For example, as shown in image below, for rising waveform, the difference in time is 26ps for input slew.
+
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/c48372d2-5e9b-4938-9154-b6454c54e8ca)
+
+
+
+
+
 
 
 
