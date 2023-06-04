@@ -383,7 +383,7 @@ For example, as shown in image below, for rising waveform, the difference in tim
 ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/c48372d2-5e9b-4938-9154-b6454c54e8ca)
 
 
-DAY-2 LABS
+**DAY-2 LABS:**
 
 **Floorplan run on OpenLANE & view in Magic**
 Importance files in increasing priority order:
@@ -445,6 +445,58 @@ After placement stage the chip looks as shown in the image below
 The below image shows the layout view where the standard cells are placed between 
  
 ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/0e6c5226-da8e-4e4c-b5e2-85cafa58d07c)
+ 
+
+# **DAY 3**
+ 
+**Design Library cel using Magic Layout and NGSPICE simulation**
+ 
+**DAY-3 LABS:**
+
+These labs focus on SPICE simulations of the inverter layout created in Magic layout tool. So, we use NGSPICE simulator to charatcerize the inverter cell.
+ 
+To perform the SPICE simulation, following files are required:
+      1. sky130A.tech: This file contains the details of the technology node specific items. For example, the information of metal layers, nwell, pwell, diffusion and the area information of the metal layers, nwell, diffusion layers and so on. This file is read in Magic layout to interpret the layout drawn of the particular circuit.  
+      2. sky130A_inverter.mag: This file contains inverter layout created using Magic layout tool.
+ 
+The command to invoke the magic file to open the inverter layout is as follows:
+
+**magic -T sky130A.tech sky130A_inverter.mag &**
+ 
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/9a6122d8-4382-4fb2-a9c6-0013307f0983)
+
+To run the spice simulation on the inverter, follow below steps
+
+1. Extract the spice netlist of the layout using - **ext2spice**
+   The sky130A_inv.spice is generated that contains the pmos and nmos dimensions, power, ground, input and output pins connection to the inverter.
+ 
+2. Complete the spice deck by defining the input stimulus and output load. The completed spice deck is shown in below image.
+
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/bf82d88b-3894-42e9-9247-4489af9f12ea)
+
+The spice deck describes below circuit diagram on the inverter.
+ 
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/04b3bffd-f58e-4e81-9ddc-c7b0a4002d7a)
+
+3. To run the spice simulation, use the commands 
+       1. **ngspice sky130A_inv.spice &**
+       2. **plot y vs time a**
+
+4. Measure the values of the rise and fall time at 50% and calculate the time difference, that will give the propagation delay of the inverter at that process corner.
+
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/e0428220-2a38-479a-b4e7-f8e24c76dc78)
+
+The red line is the output of the inverter which is a falling waveform.
+The blue line is the input to the inverter which is a rising waveform.
+
+Time difference between 50% of falling waveform and 50% of the rising waveform = 2.31 - 2.15 = 0.16ns 
+
+
+ 
+
+
+
+
 
 
 
