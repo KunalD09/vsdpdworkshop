@@ -90,13 +90,16 @@ To invoke openlane, following command is used
 
 **package require openlane 0.9**
 
-Before running synthesis, it is important to set the environment variables, library paths and design files which can be done by. The design chosen here is RISC-V 32a design which is a simple processor design.
+Before running synthesis, it is important to set the environment variables, library paths and design files which can be done by the prep -design command. The design chosen here is RISC-V 32a design which is a simple processor design.
 
 The following command sets the paths to picorv32a design files, constraints, and TCL scripts to run the physical design steps.
 
 **prep -design picorv32a**
 
 As shown in image below, the prep -design command does following items
+
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/37778d2c-ce6a-45ec-a2ce-174881d4e992)
+
 1. sources the <design>/config.tcl file
 2. set the Process Design Kit (PDK) root directory which is SKY130A.
 3. Standard cell library used here is sky130_fd_sc_hd
@@ -109,7 +112,7 @@ There are many config files which contains switches to set the synthesis, floorp
 2. config.tcl file overrides the default settings
 3. <process_corner>_config.tcl file (example - sky130A_sky130_fd_sc_hd_config.tcl) overrides the config.tcl settings - this file can be modified to change the settings according to requirements.
 
-To run synthesis, run the following command. It will Yosys tool and ABC tool which converts the RTL to the gate-level netlist. 
+To run synthesis, run the following command. It will invoke Yosys tool and ABC tool which converts the RTL to the gate-level netlist. 
  
 **run_synthesis**
          
@@ -121,11 +124,19 @@ According to synthesis results,
 Number of D flip-flops = 1613
 Total number of cells  = 14876
 Flop ratio = (1613/14876) * 100 = 10.84%
+ 
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/bada6a9a-effb-4fe9-a3ef-ccb24a2dc0b4)
          
 1. We may check the success of the synthesis step by checking the synthesis folder for the synthesized netlist file (.v file)
 2. The synthesis statistics report can be accessed within the reports directory. It is usually the last yosys file since files are listed chronologically by date of modification.
 3. The synthesis timing report is as follows:    
-         
+ 
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/d9a83083-186a-4766-9683-4c328941f7fe)
+
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/8d2d58f3-6545-4907-a5e1-3e9a8cc8a4de)
+
+Current synthesis results look bad because this synthesis run does not have timing driven switches set.
+ 
 # **DAY 2**
 
 # Floorplanning and PLacement and Library cells
@@ -154,7 +165,6 @@ They are defined as follows
 A Utilisation Factor of 1 means 100% utilisation leaving no space for extra cells or nets. 
 However, practically, the Utilisation Factor is 0.5-0.6. 
 Likewise, an Aspect ratio of 1 implies that the chip is square shaped. Any value other than 1 implies rectangular chip.
-
 
 **b. Pre-placed cells**
 
@@ -202,33 +212,7 @@ Since these phenomenon can destroy the functionality of the circuit, we must hav
 As shown in the image below, the pins are placed between the core and die and planning for pin-placement is done by backend engineers for which they need to understand the design. The pin-blockage is placed between the pins to avoid placing the logic cells between core and die. 
 
 ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/8d355506-12f0-4b00-86c2-70354a46e46b)
-
-DAY-2 LABS
-
-**Floorplan run on OpenLANE & view in Magic**
-Importance files in increasing priority order:
-      - floorplan.tcl - it contains the system default settings
-      - config.tcl - it overrides the default settings in floorplan.tcl
-      - sky130A_sky130_fd_sc_hd_config.tcl - the settings in this file will override config.tcl file settings
-         
-Floorplan envrionment variables or switches:
-      - FP_CORE_UTIL - floorplan core utilisation
-      - FP_ASPECT_RATIO - floorplan aspect ratio
-      - FP_CORE_MARGIN - Core to die margin area
-      - FP_IO_MODE - defines pin configurations (1 = equidistant/0 = not equidistant)
-      - FP_CORE_VMETAL - vertical metal layer
-      - FP_CORE_HMETAL - horizontal metal layer
-         
-Note: Usually, vertical metal layer and horizontal metal layer values will be 1 more than that specified in the files
-         
-To run the picorv32a floorplan in openLANE, use the below command
-
-**run_floorplan**
-         
-To view the floorplan, Magic is invoked after moving to the results/floorplan directory:
-
-
-         
+ 
 # Lec 2:
 
 **a. Netlist binding and initial placement**
@@ -398,6 +382,65 @@ For example, as shown in image below, for rising waveform, the difference in tim
 
 ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/c48372d2-5e9b-4938-9154-b6454c54e8ca)
 
+
+DAY-2 LABS
+
+**Floorplan run on OpenLANE & view in Magic**
+Importance files in increasing priority order:
+      - floorplan.tcl - it contains the system default settings
+      - config.tcl - it overrides the default settings in floorplan.tcl
+      - sky130A_sky130_fd_sc_hd_config.tcl - the settings in this file will override config.tcl file settings
+         
+Floorplan envrionment variables or switches:
+      - FP_CORE_UTIL - floorplan core utilisation
+      - FP_ASPECT_RATIO - floorplan aspect ratio
+      - FP_CORE_MARGIN - Core to die margin area
+      - FP_IO_MODE - defines pin configurations (1 = equidistant/0 = not equidistant)
+      - FP_CORE_VMETAL - vertical metal layer
+      - FP_CORE_HMETAL - horizontal metal layer
+         
+Note: Usually, vertical metal layer and horizontal metal layer values will be 1 more than that specified in the files
+         
+To run the picorv32a floorplan in openLANE, use the below command
+
+**run_floorplan**
+         
+To view the floorplan, Magic is invoked using below command after moving to the results/floorplan directory:
+ 
+**magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.floorplan.def &**
+
+The floorplan of the picorv32a design looks as shown in the image below
+
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/8ba2b696-a797-4e36-a7ad-270094d24726)
+
+By using left & right button of the mouse and "z" key, we can zoom into the floorplan. As shown below the horizontal IO pins are placed using metal 3 layer. Also, the decap_3 cells are placed on the left side of the floorplan. To select the IO pin, hover the cursor over the IO pin and press "s" key. 
+ 
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/70b0f623-f353-45d4-944a-ae0126cad390)
+
+Type "what" command on the tkcon window to obtain the details of the IO pin, standard cells and any other cells in the design. The IO pins are placed equidistant because the FP_IO_MODE is set to 1.The metal layer for Horizontal IO pins is set to 2 in the floorplan default settings, so the openroad tool implemented using metal layer 3.
+ 
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/f1226c77-797b-4dc6-aacd-62f418d74cdd)
+         
+The next step is to run the placement. Following command is used to run the placement.
+
+**run_placement** 
+ 
+In Placement stage, the standard cells are placed in optimized way to meet the timing and area requirements. Placement occurs in 2 different ways
+    1. Global placement: The main objective of global placement is to reduce the wire length between the standard cells so that we can meet timing requirements. The Overflow (OVFL) parameter is important. The value of OVFL should decrease and reach 0 which means the design does not have congestion issues and meets the design requirements. If the value is near to 1, then the design will fail to meet the requirements and we need to add constraints, change strategy of synthesis, and floorplan to improve the results.
+ 
+ ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/f3f2d6a6-bbe9-43cb-9924-04cbbab3f452)
+ 
+ The Overflow parameter is 0.099 which is close to 0.
+ 
+    2. Detailed placement: In detailed placement, legalisation is the main objective. Here, the cells must lie between power rails and the cells must be abutted with each other on the power rails to avoid the DRC violations.
+ 
+To view the floorplan, use following command
+ 
+**magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.placement.def &**
+ 
+After placement stage the chip looks as shown in the image below
+ 
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/18a9e366-fc92-469e-b114-8294b191a3fb)
 
 
 
