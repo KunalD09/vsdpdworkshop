@@ -441,6 +441,11 @@ To view the floorplan, use following command
 After placement stage the chip looks as shown in the image below
  
 ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/18a9e366-fc92-469e-b114-8294b191a3fb)
+ 
+The below image shows the layout view where the standard cells are placed between 
+ 
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/0e6c5226-da8e-4e4c-b5e2-85cafa58d07c)
+
 
 
 
