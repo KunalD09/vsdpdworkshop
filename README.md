@@ -490,6 +490,45 @@ The red line is the output of the inverter which is a falling waveform.
 The blue line is the input to the inverter which is a rising waveform.
 
 Time difference between 50% of falling waveform and 50% of the rising waveform = 2.31 - 2.15 = 0.16ns 
+ 
+# DAY-4 LABS
+ 
+**Pre-layout timing analysis**
+
+Before diving into the timing analysis section, the purpose of this step is to generate the lef file of the custom inverter used for spice simulation earlier can be used in the picorv32a design. The objective of this lab is to understand how to include the external cells (designed from same technology node i.e. SKY130A) in the synthesis and place-and-route stage.
+ 
+While designing the standard cells, it is critical to follow the guidelines that are described below
+      1. The input and the output port of the standard cell must lie on the intersection of the horizontal and vertical tracks
+      2. The width of the standard cell must be odd multiple of the track horizontal pitch.
+      3. The height of the standard cell must be odd multiple of the track vertical pitch.
+ 
+To ensure the above guidelines are followed, we need to activate the grid by pressing "g" key. 
+
+The next step is to converge the grid with the track value. The track value is obtained from the track.info file. It contains the horizontal and vertical direction information and spacing between two layers. For example, the metal1 layer is at 0.23 microns and has spacing of 0.46 microns between 2 metal1 layers in horizontal direction.
+ 
+**grid [xSpacing [ySpacing [xOrigin yOrigin]]]**
+ 
+According to the guidelines, the input and the output port of the standard cell must lie on the intersection of the horizontal and vertical tracks which is shown in the image below.
+ 
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/e7ac3e49-a20f-4a63-9d24-c929321b36aa)
+ 
+As seen in the image below, the red arrow highlighting the inner rectangle occupies 3 boxes which is odd multiple of the X-spacing (i.e. 0.46um)
+
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/3cfb2665-0bd3-42f0-8c4a-ea559d26ce20)
+ 
+Similarly, the inner rectangle occupies 7 boxes in vertical direction which is odd multple of the Y-spacing (i.e. 0.34um)
+ 
+Therefore, the CMOS inverter layout is designed that meets all the requirements of the P&R tool.
+ 
+To create the LEF, it is important to define the purpose of the port. For example, the VPWR and VGND ports are defined as "class inout".
+ 
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/a9f3fa85-2d6b-4c7b-85d5-3c346f18cab7)
+
+Now we can extract the LEF file, use below steps to create the LEF file for the custom inverter.
+ 
+
+
+
 
 
  
