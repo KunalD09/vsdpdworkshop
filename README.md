@@ -1,4 +1,4 @@
-# Physical Design workshop using OpenLane/Sky130 
+# Physical Design workshop using OpenLane tool flow/Sky130A PDK 
 
 # Table of Contents
 
