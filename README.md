@@ -3,42 +3,70 @@
 # Table of Contents
 
 DAY-1: Inception of opensource EDA, OpenLANE and SKY130A PDK
+
     1. Introduction to Openlane tool flow
+    
     2. How to talk to computers?
+    
     3. Soc Design & OpenLANE
+    
     4. Openlane ASIC flow
+    
     5. DAY-1 LABS: Openlane flow 
 
 DAY-2: Floorplanning and introduction to library cells
+
     1. Floorplanning and PLacement and Library cells
+    
        Lec 1: 
+       
             a. Floorplanning concepts
+            
             b. Pre-placed cells
+            
             c. De-coupling capacitors
+            
             d. Power-planning
+            
             e. Pin-placement and logical cell placement blockage
+            
        Lec 2:
             a. Netlist binding and initial placement
+            
             b. Optimize placement using wire-length and capacitance
+            
             c. Final placement optimization
+            
             d. Need for library and characterization
+            
        Lec 3:
+       
             a. Inputs for Cell Design flow
+            
             b. Circuit design steps
+            
             c. Layout Design steps
+            
             d. Characterization Flow
+            
        Lec 4:
+       
             a. Timing Threshold Definitions
+            
             b. Propagation delay and Transient time
+            
     2. DAY-2 LABS: Floorplan run on OpenLANE & view in Magic tool
     
 DAY-3: Design library cell and SPICE simulation
+
     1. DAY-3 LABS: SPICE Simulations using NGSPICE
     
 DAY-4: Pre-layout timing analysis
+
     1. DAY-4 LABS: Synthesis, Floorplan, Placement and Clock Tree Synthesis of picorv32a design
     
 DAY-5: Final steps for RTL2GDSII generation
+
     1. DAY-5 LABS: Power distribution network and routing
 
 
