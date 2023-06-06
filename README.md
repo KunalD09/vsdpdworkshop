@@ -525,7 +525,122 @@ To create the LEF, it is important to define the purpose of the port. For exampl
 ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/a9f3fa85-2d6b-4c7b-85d5-3c346f18cab7)
 
 Now we can extract the LEF file, use below steps to create the LEF file for the custom inverter.
+**      1. save <filename>.mag (optional)
+      2. lef write (this command will write the .lef file with the same name as of the cell name)**
  
+The next part is the actual implementation (place-and-route) flow to generate the GDSII file. 
+ 
+I. **Synthesis:** Synthesis is the first step of implementation and it is very crucial to solve timing analysis at this step. 
+ 
+In initial run, the config.tcl file had following variables and constraints set. The .libs were defined in the default settings in synthesis.tcl file. 
+
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/9ebacb7f-fafc-4760-9337-80b3520326ae)
+
+Initial synthesis run produced very bad results as shown in the image below.
+ 
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/5103ab68-4de6-49af-9a1c-8c14361bb129)
+
+The chip area is 147712.918480 sq. um
+WNS = -24.89ns
+TNS = -759.46ns
+
+The synthesis results are so bad because the switches to optimize the logic to meet timing requirements are not met.
+ 
+So, after enabling following switches the synthesis timing results look much better
+      1. set ::env(SYNTH_STRATEGY) "DELAY 1"
+      2. set ::env(SYNTH_MAX_FANOUT) "4"
+      3. set ::env(SYNTH_SIZING) "1"
+      4. set ::env(SYNTH_BUFFERING) "1"
+ 
+Below are the results after setting the above switches.
+
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/927690a8-50a7-4271-959c-ba233c80962f)
+
+Here the chip area has increased to 209181.872 sq. um
+WNS = 0.0ns
+TNS = 0.0ns
+ 
+As we can see the difference, after enabling the synthesis switches improved the timing at the cost of area.
+ 
+Another purpose of running this flow is to include the custom inverter in picorv32a design that was designed earlier. As shown in the image above the cell "sky130_vsdinv_new" is the custom inverter added by the synthesis tool while synthesizing. There are 2166 intances of the custom inverter in the synthesized netlist.
+ 
+In this run, the synthesis produced good result. Let's assume synthesis timing was still negative. For example, WNS = -3.17ns. So, the question is what next? Should we continue with the floorplan or fix the timing at synthsis stage and then proceed. Of course, we have to meet timing at synthesis stage to make place and route smooth.
+ 
+There are few ways to improve the timing at synthesis stage:
+1. Add more exceptions such as multi-cycle paths and/or false paths.
+2. Define clock relationships properly to avoid bogus violations between asynchronous clocks.
+3. Replace the low drive strength cell with a higher drive strength cell.
+4. If allowed, we can replace the high density (hd) cell with high speed (hs) cell.
+
+Here, we will take the step 3. i.e. replace low-drive strength cell with a higher drive-strength cell.
+
+Following are the steps to improve the slack for the synthesis results
+1. Invoke the OpenSTA tool by using following command
+ 
+   **sta pre_sta.conf**
+ 
+2. pre_sta.conf file is used for running STA in OpenSTA tool 
+ 
+   ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/e683694a-63b8-40bd-8e79-64cc5da78941)
+ 
+3. create a separate <filename>.sdc file which has contents as given in the image below for reference.
+ 
+   ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/b5f1172b-63d6-460b-ac5e-634b99d6fff0)
+
+4. After running STA, we get the same result as shown in the image below.
+ 
+   ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/c601c227-ca0e-40e0-b172-3ebf9104dfc9)
+ 
+5. As shown in the image below, the delay of the buf_1 cell is 0.85ns which is too high. 
+ 
+   ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/280ecfca-8589-4380-a121-519954993b64)
+ 
+   We need to replace the cell using the command given below
+ 
+   **replace_cell _44322_ sky130_fd_sc_hd_buf_4**
+   
+   The command above says replace the cell _44322_ (instance name of the cell) with sky130_fd_sc_hd_buf_4 (has drive strangth of 4).
+ 
+   So, after replacing the cell, WNS went down to -1.0535ns as shown in the image below.
+ 
+   ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/cca3d593-439d-4bc1-9934-6978799a000a)
+ 
+   We can keep repeating the same strategy of replacing the cells with higher drive strength cell until we are satisfied with the results.
+ 
+ 6. So, after modifying the netlist we need to use the modified netlist in floorplan and further steps.
+    The command used to create a new netlist using OpenSTA tool is as follows:
+ 
+    **write_verilog <filename>.v** 
+ 
+ II. After synthesis completed successfully, run the floorplan command run_floorplan.
+     The run_floorplan command executes below steps
+     1. init_floorplan
+     2. place_io
+     3. global_placement_or 
+        At this stage the Overflow converges to 0 
+ 
+        ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/9eca52e7-48e8-4d2a-abc4-336a4bfaa7cf)
+ 
+        Even WNS is positive
+ 
+        ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/7b3ae327-f0dc-4dc1-88c3-c15c7385a28e)
+
+      4. tap_decap_or
+         This command generates the Endcaps and Tapcells and finally generates the floorplan.def file for placement stage
+ 
+ III. After successful completion of floorplan stage, we can run the placement command
+
+
+
+
+   
+
+ 
+
+ 
+
+ 
+
 
 
 
