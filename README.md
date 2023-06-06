@@ -456,7 +456,7 @@ The below image shows the layout view where the standard cells are placed betwee
 
 # **DAY 3**
  
-**Design Library cel using Magic Layout and NGSPICE simulation**
+**Design Library cell using Magic Layout and NGSPICE simulation**
  
 **DAY-3 LABS:**
 
