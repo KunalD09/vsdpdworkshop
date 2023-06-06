@@ -694,7 +694,7 @@ Following are the steps to improve the slack for the synthesis results
  
     **write_verilog <filename>.v** 
  
- II. **Floorplan:** After synthesis completed successfully and satisfied with the result, run the floorplan command "run_floorplan". This creates the picorv32a.floorplan.def file which is fed into the placement stage. We can set the floorplan parameters described in earlier section to guide the tool to create optimized floorplan for the design.
+II. **Floorplan:** After synthesis completed successfully and satisfied with the result, run the floorplan command "run_floorplan". This creates the picorv32a.floorplan.def file which is fed into the placement stage. We can set the floorplan parameters described in earlier section to guide the tool to create optimized floorplan for the design.
  
 The run_floorplan command executes below steps
 1. init_floorplan
@@ -753,7 +753,7 @@ To report the worst timing report, use below command
  
 where the fields section specify the nets through which the datapath traversed in the design, parasitic capacitance value on the net, the rise or fall time of the signal (also called slew), and input pin of the next cell.
  
-**Please Note: The slack here is 0ns which is good but it may become negative or positive depending on the implementation steps. The actual timing computation is performed once the real clocks come into picture. Again, if the slack would have been negative at placement stage then timing ECO have to performed to improve the QoR. To perform timing ECO, open the OpenSTA tool to analyze the failing path as described above and generate a new modified netlist for next steps.** 
+**Please Note: The slack here is 0ns which is good but it may become negative or positive depending on the implementation steps. The actual timing computation is performed once the real clocks come into picture. Again, if the slack would have been negative at placement stage then timing ECO have to be performed to improve the QoR. To perform timing ECO, open the OpenSTA tool to analyze the failing path as described above and generate a new modified netlist for next steps.** 
  
  _Follow the steps below to discover the real world of VLSI...._ :)
  
