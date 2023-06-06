@@ -151,7 +151,9 @@ m. Routing – Implements the interconnect system between standard cells using t
 
 **5. DAY-1 LABS: Openlane flow**
 
-Openlane flow initial run command to enter into bash mode is docker command as given in image below.
+Openlane flow initial run command to enter into bash mode is docker command as given below.
+
+**docker**
 
 To run the entire flow, there is a script available flow.tcl which will run the flow from synthesis to GDSII file generation. We can run the script in interactive mode as well where we can run each from synthesis to GDSII flow separately.
 
