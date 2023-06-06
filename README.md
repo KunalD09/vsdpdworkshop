@@ -1,15 +1,31 @@
 # Physical Design workshop using OpenLane/Sky130 
 
-# **DAY 1**
+# Table of Contents
 
-# Introduction to Openlane tool flow
+DAY-1: Inception of opensource EDA, OpenLANE and SKY130A PDK
+    1. Introduction to Openlane tool flow
+    2. How to talk to computers?
+    3. Soc Design & OpenLANE
+    4. Openlane ASIC flow
+    5. DAY-1 LABS
+
+DAY-2: Floorplanning and introduction to library cells
+    1. Floorplanning and PLacement and Library cells
+       LEC 1: 
+
+
+
+
+# **DAY-1: Inception of opensource EDA, OpenLANE and SKY130A PDK**
+
+# 1. Introduction to Openlane tool flow
 
 OpenLANE is an opensource tool or flow used for opensource tape-outs. The OpenLANE flow comprises a variety of tools such as Yosys, ABC, OpenSTA, Fault, OpenROAD app, Netgen and Magic which are used to harden chips and macros, i.e. generate final GDSII from the design RTL. The primary goal of OpenLANE is to produce clean GDSII with no human intervention. OpenLANE has been tuned to function for the Google-Skywater130 Opensource Process Design Kit.
 
-# How to talk to computers?
+# 2. How to talk to computers?
 The RISC-V Instruction Set Architecture (ISA) is a language used to talk to computers whose hardware is based on RISC-V core. If a user wishes to run a certain application software on a computer, its corresponding C/C++/Java program must be converted into instructions by the compliler. The ouput of the compiler is hardware dependent. These instructions go as inputs to the assembler which outputs binary language that the hardware logic in the chip layout can make sense of. According to the bits received, the digital logic consisting of gates performs the function required by the user of the application software.
 
-# SoC Design & OpenLANE
+# 3. SoC Design & OpenLANE
 Components of opensource digital ASIC design
 The design of digital Application Specific Integrated Circuit (ASIC) requires three enablers or elements - Resistor Transistor Logic Intellectual Property (RTL IPs), Electronic Design Automation (EDA) Tools and Process Design Kit (PDK) data.
 
@@ -36,7 +52,7 @@ e. Detailed Placement: for legal positions and meeting timing
 f. Routing: Connecting nets to the cells and meeting timing considering real clocks.
 g. Signoff: Physical (DRC, LVS) and Timing verifications (STA)
 
-# Openlane ASIC flow
+# 4. Openlane ASIC flow
 
 ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/08fc4fb0-4468-41aa-8b0f-635497be1118)
 
@@ -76,7 +92,7 @@ l. CTS – Clock tree synteshsis is used to create the clock distribution networ
 
 m. Routing – Implements the interconnect system between standard cells using the remaining available metal layers after CTS and PDN generation. The routing is performed on routing grids to ensure minimal DRC errors.
 
-**DAY-1 LABS**
+**5. DAY-1 LABS**
 
 Openlane flow initial run command to enter into bash mode is docker command as given in image below.
 
@@ -138,9 +154,9 @@ Flop ratio = (1613/14876) * 100 = 10.84%
 
 Current synthesis results look bad because this synthesis run does not have timing driven switches set.
  
-# **DAY 2**
+# **DAY-2: Floorplanning and introduction to library cells**
 
-# Floorplanning and PLacement and Library cells
+# 1. Floorplanning and PLacement and Library cells
 
 # Lec 1:
 
@@ -731,13 +747,15 @@ Following are the steps to improve the slack for the synthesis results
  
      1. GLB_RT_MAXLAYER: The number of the highest metal layer that can be used for routing.
   
-     2. 
+     2. ROUTING_STRATEGY: The routing strategy ranges from 0-3 and 14 where 0 means it is least effort to route the interconnects and not timing driven and 14 means the tool makes high effort to produce the results.
  
-     There are two types of routing:
+     Routing can be run using the command:
  
-     1. Global routing: 
-
+     **run_routing**
  
+ VII. Generation of the SPEF file: 
+ 
+     
  
 
  
