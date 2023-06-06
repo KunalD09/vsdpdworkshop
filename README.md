@@ -815,13 +815,13 @@ Routing can be run using the command:
  
 **run_routing**
 
-In this lab, we have used the ROUTING_STRATEGY as "0".
+In this lab, we have used the ROUTING_STRATEGY as "0". 
 
 Below image shows the timing results of the routing stage:
     
 ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/4a8ba82a-5689-4fbf-a1bd-c9f5da9a57df)
 
-Below image shows there are 0 violations during the routing stage:
+Below image shows there are 0 violations during the routing stage. It means there are 0 DRC violations in the design.
     
 ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/30c3912c-cf42-47d3-b151-870bf9e440bf)
  
