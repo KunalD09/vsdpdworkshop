@@ -696,22 +696,22 @@ Following are the steps to improve the slack for the synthesis results
  
  II. **Floorplan:** After synthesis completed successfully and satisfied with the result, run the floorplan command "run_floorplan". This creates the picorv32a.floorplan.def file which is fed into the placement stage. We can set the floorplan parameters described in earlier section to guide the tool to create optimized floorplan for the design.
  
-     The run_floorplan command executes below steps
-     1. init_floorplan
-     2. place_io
-     3. global_placement_or 
+The run_floorplan command executes below steps
+1. init_floorplan
+2. place_io
+3. global_placement_or 
  
-        At this stage the Overflow converges to 0.099 which means it is good.
+At this stage the Overflow converges to 0.099 which means it is good.
  
-        ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/9eca52e7-48e8-4d2a-abc4-336a4bfaa7cf)
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/9eca52e7-48e8-4d2a-abc4-336a4bfaa7cf)
  
-        Even WNS is positive as shown in below image.
+Even WNS is positive as shown in below image.
  
-        ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/7b3ae327-f0dc-4dc1-88c3-c15c7385a28e)
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/7b3ae327-f0dc-4dc1-88c3-c15c7385a28e)
 
-      4. tap_decap_or
+4. tap_decap_or
  
-         This command generates the Endcaps and Tapcells and finally generates the floorplan.def file for placement stage
+This command generates the Endcaps and Tapcells and finally generates the floorplan.def file for placement stage
  
  III. **Placement:** After successful completion of floorplan stage, we can run the placement command - **run_placement**. This command generates the picorv32a.placement.def file which is an input to clock-tree synthesis stage.
  
