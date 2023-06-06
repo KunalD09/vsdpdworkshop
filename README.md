@@ -108,6 +108,7 @@ As shown in image below, the prep -design command does following items
 6. It creates a runs/ directory where all the log files, results, reports and config files are stored.
 
 There are many config files which contains switches to set the synthesis, floorplan, placement and routing strategies. 
+ 
 1. Openlane has default settings
 2. config.tcl file overrides the default settings
 3. <process_corner>_config.tcl file (example - sky130A_sky130_fd_sc_hd_config.tcl) overrides the config.tcl settings - this file can be modified to change the settings according to requirements.
@@ -250,19 +251,24 @@ Libraries are of different types:
 # Lec 3:
 
 **a. Inputs for Cell Design flow**
+ 
 Inputs for the cell design consists of following items.
+ 
 1. Process Design Kits (PDKs) - It consists of Design Rule Check (DRC) file also called tech file (.tlef)
 2. Layout vs Schematic (LVS) file
 3. SPICE models (consists of parameters for the technology node i.e. MOS transistors)
 4. library and user-defined specs.
 
 **b. Circuit design steps**
-While designing circuit following things are of importance
+ 
+While designing circuit following things are of importance:
+ 
 1. Cell Height - the cell height is determined by the power supply and GND tracks height. So, the cell height is equal to distance between 2 power supply tracks.
 2. Supply Voltage - All the standard cells have to operate at particular supply volatge which is an user-defined specifications
 3. Metal layers requirement - For example, Metal1 layer should be used for power supply only which could be an user specified requirement.
 
 Circuit design flow consists of 3 different steps:
+ 
 1. Circuit design step
 2. Layout design step
 3. Characterization step
@@ -290,7 +296,8 @@ Based on the stick diagram and DRC rules, the layout is drawn as shown in below 
 
 ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/34a09075-2576-4c84-97b5-6338352bae35)
 
-The outputs of the layout include following items
+The outputs of the layout include following items:
+ 
 1. Circuit description language
 2. GDSII file (goes to foundry for manufacturing)
 3. LEF (contains area information of the layout)
