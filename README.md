@@ -7,13 +7,42 @@ DAY-1: Inception of opensource EDA, OpenLANE and SKY130A PDK
     2. How to talk to computers?
     3. Soc Design & OpenLANE
     4. Openlane ASIC flow
-    5. DAY-1 LABS
+    5. DAY-1 LABS: Openlane flow 
 
 DAY-2: Floorplanning and introduction to library cells
     1. Floorplanning and PLacement and Library cells
-       LEC 1: 
+       Lec 1: 
+            a. Floorplanning concepts
+            b. Pre-placed cells
+            c. De-coupling capacitors
+            d. Power-planning
+            e. Pin-placement and logical cell placement blockage
+       Lec 2:
+            a. Netlist binding and initial placement
+            b. Optimize placement using wire-length and capacitance
+            c. Final placement optimization
+            d. Need for library and characterization
+       Lec 3:
+            a. Inputs for Cell Design flow
+            b. Circuit design steps
+            c. Layout Design steps
+            d. Characterization Flow
+       Lec 4:
+            a. Timing Threshold Definitions
+            b. Propagation delay and Transient time
+    2. DAY-2 LABS: Floorplan run on OpenLANE & view in Magic tool
+    
+DAY-3: Design library cell and SPICE simulation
+    1. DAY-3 LABS: SPICE Simulations using NGSPICE
+    
+DAY-4: Pre-layout timing analysis
+    1. DAY-4 LABS: Synthesis, Floorplan, Placement and Clock Tree Synthesis of picorv32a design
+    
+DAY-5: Final steps for RTL2GDSII generation
+    1. DAY-5 LABS: Power distribution network and routing
 
 
+----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 # **DAY-1: Inception of opensource EDA, OpenLANE and SKY130A PDK**
@@ -92,7 +121,7 @@ l. CTS – Clock tree synteshsis is used to create the clock distribution networ
 
 m. Routing – Implements the interconnect system between standard cells using the remaining available metal layers after CTS and PDN generation. The routing is performed on routing grids to ensure minimal DRC errors.
 
-**5. DAY-1 LABS**
+**5. DAY-1 LABS: Openlane flow**
 
 Openlane flow initial run command to enter into bash mode is docker command as given in image below.
 
@@ -262,8 +291,6 @@ Libraries are of different types:
          ii. POCV library
          iii. SOCV library
 
-**e. Congestion aware placement using Replace**
-
 # Lec 3:
 
 **a. Inputs for Cell Design flow**
@@ -275,7 +302,7 @@ Inputs for the cell design consists of following items.
 3. SPICE models (consists of parameters for the technology node i.e. MOS transistors)
 4. library and user-defined specs.
 
-**b. Circuit design steps**
+**b. Circuit Design steps**
  
 While designing circuit following things are of importance:
  
@@ -406,9 +433,9 @@ For example, as shown in image below, for rising waveform, the difference in tim
 ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/c48372d2-5e9b-4938-9154-b6454c54e8ca)
 
 
-**DAY-2 LABS:**
+**2. DAY-2 LABS:**
 
-**Floorplan run on OpenLANE & view in Magic**
+**Floorplan run on OpenLANE & view in Magic tool**
 Importance files in increasing priority order:
       1. floorplan.tcl - it contains the system default settings
       2. config.tcl - it overrides the default settings in floorplan.tcl
@@ -470,11 +497,9 @@ The below image shows the layout view where the standard cells are placed betwee
 ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/0e6c5226-da8e-4e4c-b5e2-85cafa58d07c)
  
 
-# **DAY 3**
- 
-**Design Library cell using Magic Layout and NGSPICE simulation**
- 
-**DAY-3 LABS:**
+# DAY 3: Design library cell and SPICE simulation
+  
+**1. DAY-3 LABS: SPICE Simulations using NGSPICE**
 
 These labs focus on SPICE simulations of the inverter layout created in Magic layout tool. So, we use NGSPICE simulator to charatcerize the inverter cell.
  
@@ -514,7 +539,9 @@ The blue line is the input to the inverter which is a rising waveform.
 
 Time difference between 50% of falling waveform and 50% of the rising waveform = 2.31 - 2.15 = 0.16ns 
  
-# DAY-4 LABS:
+# DAY-4: Pre-layout timing analysis
+
+**1. DAY-4 LABS: Synthesis, Floorplan, Placement and Clock Tree Synthesis of picorv32a design**
  
 **Pre-layout timing analysis:**
 
@@ -725,6 +752,10 @@ Following are the steps to improve the slack for the synthesis results
  
      ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/c7b15f98-b48c-440a-90ef-baa648b295d0)
  
+ # DAY-5: Final steps for RTL2GDSII generation
+    
+ DAY-5 LABS: Power distribution network and routing
+    
  V. **Power Distribution Network:** This step of the P&R flow is used for creating the power mesh inside the core. 
  
      As shown in image below, the power rails are created using metal1 layer which is distributed to the standard cells that determines the height of the standard cell.
