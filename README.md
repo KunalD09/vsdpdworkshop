@@ -612,23 +612,71 @@ Following are the steps to improve the slack for the synthesis results
  
     **write_verilog <filename>.v** 
  
- II. After synthesis completed successfully, run the floorplan command run_floorplan.
+ II. After synthesis completed successfully and satisfied with the result, run the floorplan command "run_floorplan".
+     We can set the parameters described in earlier section to guide the tool to create optimized floorplan for the design.
+ 
      The run_floorplan command executes below steps
      1. init_floorplan
      2. place_io
      3. global_placement_or 
-        At this stage the Overflow converges to 0 
+        At this stage the Overflow converges to 0.099 which means it is good.
  
         ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/9eca52e7-48e8-4d2a-abc4-336a4bfaa7cf)
  
-        Even WNS is positive
+        Even WNS is positive as shown in below image.
  
         ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/7b3ae327-f0dc-4dc1-88c3-c15c7385a28e)
 
       4. tap_decap_or
          This command generates the Endcaps and Tapcells and finally generates the floorplan.def file for placement stage
  
- III. After successful completion of floorplan stage, we can run the placement command
+ III. After successful completion of floorplan stage, we can run the placement command - **run_placement**
+ 
+      Following are the switches that we can set to guide the tool to optimize the placement of the design
+           a. PL_TARGET_DENSITY - this indicates how much the deisgn can spread across the core area. By default it is set to 0.4 by default.
+                                  "1" - the cells are placed very close to each other
+                                  "0" - the cells are spreaded as far as possible in the given core.
+           b. PL_TIME_DRIVEN - This parameter indicates the placement is timing driven or not
+                               "1" - placement is timing driven
+                               "0" - placement is not timing driven
+           c. PL_LIB - where we can set the libs for the placement
+ 
+      Below image shows placement of standard cells in the core.
+ 
+      ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/139a6705-907f-44b6-ad0e-79b647b7cbaa)
+ 
+      Below image shows the power rails are shared with standard cells. 
+ 
+      ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/3271dce7-c228-45a6-a850-a268244195f2)
+ 
+      Below image shows the custom inverter (sky130_vsdinv_new - name of the custom inverter) is present in the picorv32a design.
+ 
+      ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/de1cfbcb-d6b7-4a64-8efb-29c289b5b7bb)
+ 
+      Below image shows the setup timing at post-placement stage. 
+
+      ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/2e4710e2-f27e-44fb-a15d-bb80466de6d1)
+ 
+      To report the worst timing report, use below command
+ 
+      **report_checks -fields {net cap slew input_pin}**
+ 
+      where the fields section specify the nets through which the datapath traversed in the design, parasitic capacitance value on the net, the rise or fall time of the signal (also called slew), and input pin of the next cell.
+ 
+ **Please Note: The slack here is 0ns which is good but it may become negative or positive depending on the implementation steps. The actual timing computation is performed once the real clocks come into picture. Again, if the slack would have been negative at placement stage then timing ECO have to performed to improve the QoR. To perform timing ECO, open the OpenSTA tool to analyze the failing path as described above and generate a new modified netlist for next steps.** 
+ 
+ _Follow the steps below to discover the real world of VLSI...._ :)
+ 
+ IV. After successfully completing the placement stage, we need to run the Clock-Tree synthesis.
+ 
+     Following are the parameters that controls the clock-tree synthesis
+         a. CTS_TARGET_SKEW - the clock skew globally should be in ps. By default it is set to 20ps.
+         b. CTS_ROOT_BUFFER - specify the cell to be inserted for the root clock. By default, clkbuf_16 is used which has higher driver stength.
+         c. CLOCK_TREE_SYNTH - Enable clock-tree synth for TritonCTS. TritonCTS is the tool that does the clock-tree synthesis.
+         d. CTS_TOLERANCE - an integer value that represents a tradeoff between QoR and runtime. Smaller the value, better is the QoR at the cost of                                   increased runtime.
+
+ 
+      
 
 
 
