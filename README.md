@@ -830,51 +830,5 @@ Two files that are output of the routing stage:
 1. picorv32a.def
 2. picorv32a.spef
     
-After the post-layout simulations confirm that the design meets all the specifications the design is ready to be taped out. This is the final stage of the IC design. 
+After the post-layout simulations confirm that the design meets all the specifications and the design is ready to be taped out, we generate the GDSII file which is sent to foundry for fabrication. GDSII file generation is the final stage of the IC design.  
  
-     
- 
-
- 
-      
-
-
-
-
-   
-
- 
-
- 
-
- 
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
