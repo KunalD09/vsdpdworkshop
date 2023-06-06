@@ -498,9 +498,9 @@ The blue line is the input to the inverter which is a rising waveform.
 
 Time difference between 50% of falling waveform and 50% of the rising waveform = 2.31 - 2.15 = 0.16ns 
  
-# DAY-4 LABS
+# DAY-4 LABS:
  
-**Pre-layout timing analysis**
+**Pre-layout timing analysis:**
 
 Before diving into the timing analysis section, the purpose of this step is to generate the lef file of the custom inverter used for spice simulation earlier can be used in the picorv32a design. The objective of this lab is to understand how to include the external cells (designed from same technology node i.e. SKY130A) in the synthesis and place-and-route stage.
  
@@ -537,7 +537,7 @@ Now we can extract the LEF file, use below steps to create the LEF file for the 
  
 The next part is the actual implementation (place-and-route) flow to generate the GDSII file. 
  
-I. **Synthesis:** Synthesis is the first step of implementation and it is very crucial to solve timing analysis at this step. 
+I. **Synthesis:** Synthesis is the first step of implementation that generates the gate-level netlist of the RTL design. In our case it is called picorv32a.synthesis.v. It is very crucial to solve timing violations at this step. 
  
 In initial run, the config.tcl file had following variables and constraints set. The .libs were defined in the default settings in synthesis.tcl file. 
 
@@ -623,8 +623,7 @@ Following are the steps to improve the slack for the synthesis results
  
     **write_verilog <filename>.v** 
  
- II. After synthesis completed successfully and satisfied with the result, run the floorplan command "run_floorplan".
-     We can set the parameters described in earlier section to guide the tool to create optimized floorplan for the design.
+ II. **Floorplan:** After synthesis completed successfully and satisfied with the result, run the floorplan command "run_floorplan". This creates the picorv32a.floorplan.def file which is fed into the placement stage. We can set the floorplan parameters described in earlier section to guide the tool to create optimized floorplan for the design.
  
      The run_floorplan command executes below steps
      1. init_floorplan
@@ -643,9 +642,10 @@ Following are the steps to improve the slack for the synthesis results
  
          This command generates the Endcaps and Tapcells and finally generates the floorplan.def file for placement stage
  
- III. After successful completion of floorplan stage, we can run the placement command - **run_placement**
+ III. **Placement:** After successful completion of floorplan stage, we can run the placement command - **run_placement**. This command generates the picorv32a.placement.def file which is an input to clock-tree synthesis stage.
  
       Following are the switches that we can set to guide the tool to optimize the placement of the design
+ 
            a. PL_TARGET_DENSITY - this indicates how much the deisgn can spread across the core area. By default it is set to 0.4 by default.
  
                                   "1" - the cells are placed very close to each other
@@ -686,13 +686,59 @@ Following are the steps to improve the slack for the synthesis results
  
  _Follow the steps below to discover the real world of VLSI...._ :)
  
- IV. After successfully completing the placement stage, we need to run the Clock-Tree synthesis.
+ IV. **Clock Tree Synthesis:** After successfully completing the placement stage, we need to run the Clock-Tree synthesis.
  
-     Following are the parameters that controls the clock-tree synthesis
+     Following are the parameters that controls the clock-tree synthesis:
+ 
          a. CTS_TARGET_SKEW - the clock skew globally should be in ps. By default it is set to 20ps.
          b. CTS_ROOT_BUFFER - specify the cell to be inserted for the root clock. By default, clkbuf_16 is used which has higher driver stength.
          c. CLOCK_TREE_SYNTH - Enable clock-tree synth for TritonCTS. TritonCTS is the tool that does the clock-tree synthesis.
          d. CTS_TOLERANCE - an integer value that represents a tradeoff between QoR and runtime. Smaller the value, better is the QoR at the cost of                                   increased runtime.
+ 
+     Command to run the CTS - **run_cts**
+ 
+     This stage generates picorv32a.cts.def file used for routing. 
+ 
+     The timing results are the performed with real clocks. Real clocks mean the clock path has actual clock-buffer, interconnect and clock skew used for timing analysis.
+ 
+     Below image shows the setup timing slack met
+ 
+     ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/f5cbf33a-e5e1-40e6-9b75-a1438219dae0)
+
+     Below image shows the hold time slack met
+ 
+     ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/c7b15f98-b48c-440a-90ef-baa648b295d0)
+ 
+ V. **Power Distribution Network:** This step of the P&R flow is used for creating the power mesh inside the core. 
+ 
+     As shown in image below, the power rails are created using metal1 layer which is distributed to the standard cells that determines the height of the standard cell.
+ 
+     The pitch of the metal1 layer is 2.72um which means the height of the standard cell is also 2.72um.
+ 
+     ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/05ec843a-464a-4710-b13b-3947755cafd9)
+
+     Below image shows the power mesh created and the green line is a strap that is connected to the VDD (metal1 layer) through a via.
+ 
+     ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/fe6b0912-59f3-4de6-81c6-7f5b31447b2a)
+ 
+     As shown in the image below, the red and blue box inside the core are connected to the red and blue IO pad respectively. To ensure the power reaches inside the chip, there is a strap created inside the chip. For example, there is a vertical red line created to distribute the power inside the chip is called a strap. 
+ 
+     ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/5263715e-63a7-422b-afd3-4bf0e4ebb6ab)
+
+ VI. Routing: The routing stage is routing all the interconnects to the cells. 
+ 
+     Following are the parameters we can set to control the routing of the interconnects to obtain the best optimized results:
+ 
+     1. GLB_RT_MAXLAYER: The number of the highest metal layer that can be used for routing.
+  
+     2. 
+ 
+     There are two types of routing:
+ 
+     1. Global routing: 
+
+ 
+ 
 
  
       
