@@ -394,17 +394,17 @@ For example, as shown in image below, for rising waveform, the difference in tim
 
 **Floorplan run on OpenLANE & view in Magic**
 Importance files in increasing priority order:
-      - floorplan.tcl - it contains the system default settings
-      - config.tcl - it overrides the default settings in floorplan.tcl
-      - sky130A_sky130_fd_sc_hd_config.tcl - the settings in this file will override config.tcl file settings
+      1. floorplan.tcl - it contains the system default settings
+      2. config.tcl - it overrides the default settings in floorplan.tcl
+      3. sky130A_sky130_fd_sc_hd_config.tcl - the settings in this file will override config.tcl file settings
          
 Floorplan envrionment variables or switches:
-      - FP_CORE_UTIL - floorplan core utilisation
-      - FP_ASPECT_RATIO - floorplan aspect ratio
-      - FP_CORE_MARGIN - Core to die margin area
-      - FP_IO_MODE - defines pin configurations (1 = equidistant/0 = not equidistant)
-      - FP_CORE_VMETAL - vertical metal layer
-      - FP_CORE_HMETAL - horizontal metal layer
+      1. FP_CORE_UTIL - floorplan core utilisation
+      2. FP_ASPECT_RATIO - floorplan aspect ratio
+      3. FP_CORE_MARGIN - Core to die margin area
+      4. FP_IO_MODE - defines pin configurations (1 = equidistant/0 = not equidistant)
+      5. FP_CORE_VMETAL - vertical metal layer
+      6. FP_CORE_HMETAL - horizontal metal layer
          
 Note: Usually, vertical metal layer and horizontal metal layer values will be 1 more than that specified in the files
          
@@ -532,7 +532,7 @@ To create the LEF, it is important to define the purpose of the port. For exampl
 ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/a9f3fa85-2d6b-4c7b-85d5-3c346f18cab7)
 
 Now we can extract the LEF file, use below steps to create the LEF file for the custom inverter.
-**      1. save <filename>.mag (optional)
+**    1. save <filename>.mag (optional)
       2. lef write (this command will write the .lef file with the same name as of the cell name)**
  
 The next part is the actual implementation (place-and-route) flow to generate the GDSII file. 
@@ -548,7 +548,9 @@ Initial synthesis run produced very bad results as shown in the image below.
 ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/5103ab68-4de6-49af-9a1c-8c14361bb129)
 
 The chip area is 147712.918480 sq. um
+ 
 WNS = -24.89ns
+
 TNS = -759.46ns
 
 The synthesis results are so bad because the switches to optimize the logic to meet timing requirements are not met.
@@ -564,7 +566,9 @@ Below are the results after setting the above switches.
 ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/927690a8-50a7-4271-959c-ba233c80962f)
 
 Here the chip area has increased to 209181.872 sq. um
+
 WNS = 0.0ns
+
 TNS = 0.0ns
  
 As we can see the difference, after enabling the synthesis switches improved the timing at the cost of area.
@@ -626,6 +630,7 @@ Following are the steps to improve the slack for the synthesis results
      1. init_floorplan
      2. place_io
      3. global_placement_or 
+ 
         At this stage the Overflow converges to 0.099 which means it is good.
  
         ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/9eca52e7-48e8-4d2a-abc4-336a4bfaa7cf)
@@ -635,17 +640,24 @@ Following are the steps to improve the slack for the synthesis results
         ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/7b3ae327-f0dc-4dc1-88c3-c15c7385a28e)
 
       4. tap_decap_or
+ 
          This command generates the Endcaps and Tapcells and finally generates the floorplan.def file for placement stage
  
  III. After successful completion of floorplan stage, we can run the placement command - **run_placement**
  
       Following are the switches that we can set to guide the tool to optimize the placement of the design
            a. PL_TARGET_DENSITY - this indicates how much the deisgn can spread across the core area. By default it is set to 0.4 by default.
+ 
                                   "1" - the cells are placed very close to each other
+ 
                                   "0" - the cells are spreaded as far as possible in the given core.
+ 
            b. PL_TIME_DRIVEN - This parameter indicates the placement is timing driven or not
+ 
                                "1" - placement is timing driven
+ 
                                "0" - placement is not timing driven
+ 
            c. PL_LIB - where we can set the libs for the placement
  
       Below image shows placement of standard cells in the core.
