@@ -825,7 +825,12 @@ Below image shows there are 0 violations during the routing stage. It means ther
     
 ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/30c3912c-cf42-47d3-b151-870bf9e440bf)
  
-VII. Generation of the SPEF file: 
+Two files that are output of the routing stage:
+
+1. picorv32a.def
+2. picorv32a.spef
+    
+After the post-layout simulations confirm that the design meets all the specifications the design is ready to be taped out. This is the final stage of the IC design. 
  
      
  
