@@ -785,7 +785,7 @@ Below image shows the hold time slack met
  
 # DAY-5: Final steps for RTL2GDSII generation
     
-**DAY-5 LABS: Power distribution network and routing**
+**1. DAY-5 LABS: Power distribution network and routing**
     
 V. **Power Distribution Network:** This step of the P&R flow is used for creating the power mesh inside the core. 
  
