@@ -713,106 +713,109 @@ Even WNS is positive as shown in below image.
  
 This command generates the Endcaps and Tapcells and finally generates the floorplan.def file for placement stage
  
- III. **Placement:** After successful completion of floorplan stage, we can run the placement command - **run_placement**. This command generates the picorv32a.placement.def file which is an input to clock-tree synthesis stage.
+III. **Placement:** After successful completion of floorplan stage, we can run the placement command - **run_placement**. This command generates the picorv32a.placement.def file which is an input to clock-tree synthesis stage.
  
-      Following are the switches that we can set to guide the tool to optimize the placement of the design
+Following are the switches that we can set to guide the tool to optimize the placement of the design
  
-           a. PL_TARGET_DENSITY - this indicates how much the deisgn can spread across the core area. By default it is set to 0.4 by default.
+a. PL_TARGET_DENSITY - this indicates how much the deisgn can spread across the core area. By default it is set to 0.4 by default.
  
-                                  "1" - the cells are placed very close to each other
+"1" - the cells are placed very close to each other
  
-                                  "0" - the cells are spreaded as far as possible in the given core.
+"0" - the cells are spreaded as far as possible in the given core.
  
-           b. PL_TIME_DRIVEN - This parameter indicates the placement is timing driven or not
+b. PL_TIME_DRIVEN - This parameter indicates the placement is timing driven or not
  
-                               "1" - placement is timing driven
- 
-                               "0" - placement is not timing driven
- 
-           c. PL_LIB - where we can set the libs for the placement
- 
-      Below image shows placement of standard cells in the core.
- 
-      ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/139a6705-907f-44b6-ad0e-79b647b7cbaa)
- 
-      Below image shows the power rails are shared with standard cells. 
- 
-      ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/3271dce7-c228-45a6-a850-a268244195f2)
- 
-      Below image shows the custom inverter (sky130_vsdinv_new - name of the custom inverter) is present in the picorv32a design.
- 
-      ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/de1cfbcb-d6b7-4a64-8efb-29c289b5b7bb)
- 
-      Below image shows the setup timing at post-placement stage. 
+"1" - placement is timing driven
 
-      ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/2e4710e2-f27e-44fb-a15d-bb80466de6d1)
+"0" - placement is not timing driven
  
-      To report the worst timing report, use below command
+c. PL_LIB - where we can set the libs for the placement
  
-      **report_checks -fields {net cap slew input_pin}**
+Below image shows placement of standard cells in the core.
  
-      where the fields section specify the nets through which the datapath traversed in the design, parasitic capacitance value on the net, the rise or fall time of the signal (also called slew), and input pin of the next cell.
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/139a6705-907f-44b6-ad0e-79b647b7cbaa)
  
- **Please Note: The slack here is 0ns which is good but it may become negative or positive depending on the implementation steps. The actual timing computation is performed once the real clocks come into picture. Again, if the slack would have been negative at placement stage then timing ECO have to performed to improve the QoR. To perform timing ECO, open the OpenSTA tool to analyze the failing path as described above and generate a new modified netlist for next steps.** 
+Below image shows the power rails are shared with standard cells. 
+ 
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/3271dce7-c228-45a6-a850-a268244195f2)
+ 
+Below image shows the custom inverter (sky130_vsdinv_new - name of the custom inverter) is present in the picorv32a design.
+ 
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/de1cfbcb-d6b7-4a64-8efb-29c289b5b7bb)
+ 
+Below image shows the setup timing at post-placement stage. 
+
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/2e4710e2-f27e-44fb-a15d-bb80466de6d1)
+ 
+To report the worst timing report, use below command
+ 
+**report_checks -fields {net cap slew input_pin}**
+ 
+where the fields section specify the nets through which the datapath traversed in the design, parasitic capacitance value on the net, the rise or fall time of the signal (also called slew), and input pin of the next cell.
+ 
+**Please Note: The slack here is 0ns which is good but it may become negative or positive depending on the implementation steps. The actual timing computation is performed once the real clocks come into picture. Again, if the slack would have been negative at placement stage then timing ECO have to performed to improve the QoR. To perform timing ECO, open the OpenSTA tool to analyze the failing path as described above and generate a new modified netlist for next steps.** 
  
  _Follow the steps below to discover the real world of VLSI...._ :)
  
- IV. **Clock Tree Synthesis:** After successfully completing the placement stage, we need to run the Clock-Tree synthesis.
+IV. **Clock Tree Synthesis:** After successfully completing the placement stage, we need to run the Clock-Tree synthesis.
  
-     Following are the parameters that controls the clock-tree synthesis:
+Following are the parameters that controls the clock-tree synthesis:
  
-         a. CTS_TARGET_SKEW - the clock skew globally should be in ps. By default it is set to 20ps.
-         b. CTS_ROOT_BUFFER - specify the cell to be inserted for the root clock. By default, clkbuf_16 is used which has higher driver stength.
-         c. CLOCK_TREE_SYNTH - Enable clock-tree synth for TritonCTS. TritonCTS is the tool that does the clock-tree synthesis.
-         d. CTS_TOLERANCE - an integer value that represents a tradeoff between QoR and runtime. Smaller the value, better is the QoR at the cost of                                   increased runtime.
- 
-     Command to run the CTS - **run_cts**
- 
-     This stage generates picorv32a.cts.def file used for routing. 
- 
-     The timing results are the performed with real clocks. Real clocks mean the clock path has actual clock-buffer, interconnect and clock skew used for timing analysis.
- 
-     Below image shows the setup timing slack met
- 
-     ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/f5cbf33a-e5e1-40e6-9b75-a1438219dae0)
-
-     Below image shows the hold time slack met
- 
-     ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/c7b15f98-b48c-440a-90ef-baa648b295d0)
- 
- # DAY-5: Final steps for RTL2GDSII generation
+a. CTS_TARGET_SKEW - the clock skew globally should be in ps. By default it is set to 20ps.
     
- DAY-5 LABS: Power distribution network and routing
+b. CTS_ROOT_BUFFER - specify the cell to be inserted for the root clock. By default, clkbuf_16 is used which has higher driver stength.
     
- V. **Power Distribution Network:** This step of the P&R flow is used for creating the power mesh inside the core. 
+c. CLOCK_TREE_SYNTH - Enable clock-tree synth for TritonCTS. TritonCTS is the tool that does the clock-tree synthesis.
+    
+d. CTS_TOLERANCE - an integer value that represents a tradeoff between QoR and runtime. Smaller the value, better is the QoR at the cost of               increased runtime.
  
-     As shown in image below, the power rails are created using metal1 layer which is distributed to the standard cells that determines the height of the standard cell.
+Command to run the CTS - **run_cts**
  
-     The pitch of the metal1 layer is 2.72um which means the height of the standard cell is also 2.72um.
+This stage generates picorv32a.cts.def file used for routing. 
  
-     ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/05ec843a-464a-4710-b13b-3947755cafd9)
+The timing results are the performed with real clocks. Real clocks mean the clock path has actual clock-buffer, interconnect and clock skew used for timing analysis.
+ 
+Below image shows the setup timing slack met
+ 
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/f5cbf33a-e5e1-40e6-9b75-a1438219dae0)
 
-     Below image shows the power mesh created and the green line is a strap that is connected to the VDD (metal1 layer) through a via.
+Below image shows the hold time slack met
  
-     ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/fe6b0912-59f3-4de6-81c6-7f5b31447b2a)
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/c7b15f98-b48c-440a-90ef-baa648b295d0)
  
-     As shown in the image below, the red and blue box inside the core are connected to the red and blue IO pad respectively. To ensure the power reaches inside the chip, there is a strap created inside the chip. For example, there is a vertical red line created to distribute the power inside the chip is called a strap. 
+# DAY-5: Final steps for RTL2GDSII generation
+    
+DAY-5 LABS: Power distribution network and routing
+    
+V. **Power Distribution Network:** This step of the P&R flow is used for creating the power mesh inside the core. 
  
-     ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/5263715e-63a7-422b-afd3-4bf0e4ebb6ab)
+As shown in image below, the power rails are created using metal1 layer which is distributed to the standard cells that determines the height of the standard cell.
+ 
+The pitch of the metal1 layer is 2.72um which means the height of the standard cell is also 2.72um.
+ 
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/05ec843a-464a-4710-b13b-3947755cafd9)
 
- VI. Routing: The routing stage is routing all the interconnects to the cells. 
+Below image shows the power mesh created and the green line is a strap that is connected to the VDD (metal1 layer) through a via.
  
-     Following are the parameters we can set to control the routing of the interconnects to obtain the best optimized results:
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/fe6b0912-59f3-4de6-81c6-7f5b31447b2a)
  
-     1. GLB_RT_MAXLAYER: The number of the highest metal layer that can be used for routing.
+As shown in the image below, the red and blue box inside the core are connected to the red and blue IO pad respectively. To ensure the power reaches inside the chip, there is a strap created inside the chip. For example, there is a vertical red line created to distribute the power inside the chip is called a strap. 
+ 
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/5263715e-63a7-422b-afd3-4bf0e4ebb6ab)
+
+VI. Routing: The routing stage is routing all the interconnects to the cells. 
+ 
+Following are the parameters we can set to control the routing of the interconnects to obtain the best optimized results:
+ 
+1. GLB_RT_MAXLAYER: The number of the highest metal layer that can be used for routing.
   
-     2. ROUTING_STRATEGY: The routing strategy ranges from 0-3 and 14 where 0 means it is least effort to route the interconnects and not timing driven and 14 means the tool makes high effort to produce the results.
+2. ROUTING_STRATEGY: The routing strategy ranges from 0-3 and 14 where 0 means it is least effort to route the interconnects and not timing driven and 14 means the tool makes high effort to produce the results.
  
-     Routing can be run using the command:
+Routing can be run using the command:
  
-     **run_routing**
+**run_routing**
  
- VII. Generation of the SPEF file: 
+VII. Generation of the SPEF file: 
  
      
  
