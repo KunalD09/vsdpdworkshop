@@ -466,17 +466,27 @@ For example, as shown in image below, for rising waveform, the difference in tim
 **2. DAY-2 LABS:**
 
 **Floorplan run on OpenLANE & view in Magic tool**
-Importance files in increasing priority order:
+    
+Important files in increasing priority order:
+    
       1. floorplan.tcl - it contains the system default settings
+    
       2. config.tcl - it overrides the default settings in floorplan.tcl
+    
       3. sky130A_sky130_fd_sc_hd_config.tcl - the settings in this file will override config.tcl file settings
          
 Floorplan envrionment variables or switches:
+    
       1. FP_CORE_UTIL - floorplan core utilisation
+    
       2. FP_ASPECT_RATIO - floorplan aspect ratio
+    
       3. FP_CORE_MARGIN - Core to die margin area
+    
       4. FP_IO_MODE - defines pin configurations (1 = equidistant/0 = not equidistant)
+    
       5. FP_CORE_VMETAL - vertical metal layer
+    
       6. FP_CORE_HMETAL - horizontal metal layer
          
 Note: Usually, vertical metal layer and horizontal metal layer values will be 1 more than that specified in the files
@@ -505,16 +515,19 @@ The next step is to run the placement. Following command is used to run the plac
 
 **run_placement** 
  
-In Placement stage, the standard cells are placed in optimized way to meet the timing and area requirements. Placement occurs in 2 different ways
-    1. Global placement: The main objective of global placement is to reduce the wire length between the standard cells so that we can meet timing requirements. The Overflow (OVFL) parameter is important. The value of OVFL should decrease and reach 0 which means the design does not have congestion issues and meets the design requirements. If the value is near to 1, then the design will fail to meet the requirements and we need to add constraints, change strategy of synthesis, and floorplan to improve the results.
+In Placement stage, the standard cells are placed in optimized way to meet the timing and area requirements. 
+
+Placement occurs in 2 different ways:
+    
+1. Global placement: The main objective of global placement is to reduce the wire length between the standard cells so that we can meet timing requirements. The Overflow (OVFL) parameter is important. The value of OVFL should decrease and reach 0 which means the design does not have congestion issues and meets the design requirements. If the value is near to 1, then the design will fail to meet the requirements and we need to add constraints, change strategy of synthesis, and floorplan to improve the results.
  
- ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/f3f2d6a6-bbe9-43cb-9924-04cbbab3f452)
+![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/f3f2d6a6-bbe9-43cb-9924-04cbbab3f452)
  
- The Overflow parameter is 0.099 which is close to 0.
+The Overflow parameter is 0.099 which is close to 0.
  
-    2. Detailed placement: In detailed placement, legalisation is the main objective. Here, the cells must lie between power rails and the cells must be abutted with each other on the power rails to avoid the DRC violations.
+2. Detailed placement: In detailed placement, legalisation is the main objective. Here, the cells must lie between power rails and the cells must be abutted with each other on the power rails to avoid the DRC violations.
  
-To view the floorplan, use following command
+To view the floorplan, use the following command,
  
 **magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.placement.def &**
  
@@ -525,7 +538,6 @@ After placement stage the chip looks as shown in the image below
 The below image shows the layout view where the standard cells are placed between 
  
 ![image](https://github.com/KunalD09/vsdpdworkshop/assets/18254670/0e6c5226-da8e-4e4c-b5e2-85cafa58d07c)
- 
 
 # DAY 3: Design library cell and SPICE simulation
   
